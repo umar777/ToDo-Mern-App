@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Create() {
+function Create({ addTodo }) {
   const [task, setTask] = useState();
 
   const handleAdd = () => {
@@ -10,7 +10,8 @@ function Create() {
         .post("http://localhost:3000/add", { task: task })
         .then((result) => {
           console.log(result);
-          setTask(""); // Clear input after adding
+          addTodo(result.data);
+          setTask("");
         })
         .catch((err) => console.log(err));
     }

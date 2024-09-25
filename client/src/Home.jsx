@@ -13,10 +13,14 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
+  const addTodo = (newTodo) => {
+    setTodos([...todos, newTodo]);
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>ToDo List App</h2>
-      <Create />
+      <Create addTodo={addTodo} />
       {todos.length === 0 ? (
         <h2 style={styles.noRecord}>No Record</h2>
       ) : (
