@@ -26,6 +26,22 @@ app.get("/get", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+app.put("/update/:id", (req, res) => {
+  const { id } = req.params;
+  addTodoModel
+    .findByIdAndUpdate({ _id: id }, { done: true })
+    .then((result) => res.json(result))
+    .catch((error) => res.json(error));
+});
+
+app.delete("/delete/:id", (req, res) => {
+  const { id } = req.params;
+  addTodoModel
+    .findByIdAndDelete({ _id: id })
+    .then((result) => res.json(result))
+    .catch((error) => res.json(error));
+});
+
 app.listen(3000, () => {
   console.log("Server is running");
 });

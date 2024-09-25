@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaCheckCircle, FaTrashAlt, FaRegCircle } from "react-icons/fa";
 import Create from "./Create";
 import axios from "axios";
 
@@ -17,6 +17,20 @@ function Home() {
     setTodos([...todos, newTodo]);
   };
 
+  const handleEdit = (id) => {
+    axios
+      .put("http://localhost:3000/update/" + id)
+      .then((result) => location.reload())
+      .catch((err) => console.log(err));
+  };
+
+  const handleDelete = (id) => {
+    axios
+      .delete("http://localhost:3000/delete/" + id)
+      .then((result) => location.reload())
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>ToDo List App</h2>
@@ -25,10 +39,15 @@ function Home() {
         <h2 style={styles.noRecord}>No Record</h2>
       ) : (
         todos.map((todo) => (
-          <div key={todo.id} style={styles.todoItem}>
-            <input type="checkbox" style={styles.checkbox} />
+          <div key={todo._id} style={styles.todoItem}>
+            <div style={styles.editIcon} onClick={() => handleEdit(todo._id)}>
+              {todo.done ? <FaCheckCircle /> : <FaRegCircle />}
+            </div>
             <span style={styles.todoText}>{todo.task}</span>
-            <FaTrashAlt style={styles.trashIcon} />
+            <FaTrashAlt
+              style={styles.trashIcon}
+              onClick={() => handleDelete(todo._id)}
+            />
           </div>
         ))
       )}
@@ -61,8 +80,12 @@ const styles = {
     marginBottom: "10px",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
-  checkbox: {
+  editIcon: {
+    color: "#5bc0de",
+    cursor: "pointer",
     marginRight: "10px",
+    display: "flex",
+    alignItems: "center",
   },
   todoText: {
     flex: 1,
